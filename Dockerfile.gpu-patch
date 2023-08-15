@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:latest
+
+FROM codeproject/ai-server:gpu-2.1.11 as builder
+#for i in `git diff --name-only | sed -e 's/src\/modules\///g'`; do echo "ADD src/modules/$i /app/preinstalled-modules/$i"; done
+ADD src/modules/FaceProcessing/intelligencelayer/requirements.linux.cuda.txt /app/preinstalled-modules/FaceProcessing/intelligencelayer/requirements.linux.cuda.txt
+ADD src/modules/FaceProcessing/requirements.linux.cuda.txt /app/preinstalled-modules/FaceProcessing/requirements.linux.cuda.txt
+ADD src/modules/FaceProcessing/requirements.linux.txt /app/preinstalled-modules/FaceProcessing/requirements.linux.txt
+ADD src/modules/FaceProcessing/requirements.txt /app/preinstalled-modules/FaceProcessing/requirements.txt
+ADD src/modules/ObjectDetectionYolo/requirements.linux.cuda.txt /app/preinstalled-modules/ObjectDetectionYolo/requirements.linux.cuda.txt
+ADD src/modules/ObjectDetectionYolo/requirements.linux.txt /app/preinstalled-modules/ObjectDetectionYolo/requirements.linux.txt
+ADD src/modules/ObjectDetectionYolo/requirements.txt /app/preinstalled-modules/ObjectDetectionYolo/requirements.txt
+ADD https://github.com/ultralytics/yolov5/releases/download/v7.0/yolov5x6.pt /app/preinstalled-modules/ObjectDetectionYolo/custom-models/ipcam-yolov5x6.pt
+
+WORKDIR /app/server
+RUN python3.8 -m pip --no-cache-dir install -r /app/preinstalled-modules/FaceProcessing/requirements.linux.cuda.txt -r /app/preinstalled-modules/ObjectDetectionYolo/requirements.linux.cuda.txt
+RUN cd /app/preinstalled-modules/FaceProcessing && bash ../../setup.sh
+ADD --link https://github.com/ultralytics/yolov5/releases/download/v7.0/yolov5m.pt /app/modules/FaceProcessing/assets/yolov5m.pt
+ADD --link https://github.com/ultralytics/yolov5/releases/download/v7.0/yolov5s.pt /app/modules/FaceProcessing/assets/yolov5s.pt
+
+FROM builder
+
+WORKDIR /app/server
+# Final ENTRYPOINT
+ENTRYPOINT ["./CodeProject.AI.Server"]
