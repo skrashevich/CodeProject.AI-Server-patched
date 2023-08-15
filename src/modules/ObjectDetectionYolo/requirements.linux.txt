@@ -17,6 +17,6 @@ torchvision     # Installing TorchVision, for working with computer vision model
 Seaborn         # Installing Seaborn, a data visualization library based on matplotlib
 
 # the Ultralytics Yolov5 package
-yolov5==6.2.3	# Installing Ultralytics YoloV5 package for object detection in images
-
+yolov5>=6.2.3	# Installing Ultralytics YoloV5 package for object detection in images
+psutil
 # last line empty.

@@ -10,10 +10,11 @@ PyYAML           # Installing PyYAML, a library for reading configuration files
 ## Specific versions that match the models we're using. 
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch>=2.0.0            # Installing PyTorch, an open source machine learning framework
+--extra-index-url https://download.pytorch.org/whl/cpu
 torchvision      # Installing TorchVision, for working with computer vision models
 
 ## These to be removed (not needed for inference)
 # matlabplotlib
 Seaborn         # Installing Seaborn, a data visualization library based on matplotlib
-
+psutil
 ## last line empty.
